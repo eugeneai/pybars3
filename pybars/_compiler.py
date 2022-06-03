@@ -109,7 +109,7 @@ notclosebracket ::= (~(']') <anything>)
 safesymbol ::=  ~<alt_inner> '['? (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol ']'? => start + u''.join(symbol)
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
 rdfid ::= ~<alt_inner> (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol => start + u''.join(symbol)
-rdf ::= ~<alt_inner> ('-'|'^'|'?'|'!')*:prefix <rdfid>:namespace ':' <rdfid>:symbol => ('rdfid',) + (repr(prefix), repr(namespace), repr(symbol) )
+rdf ::= ~<alt_inner> ('-'|'^'|'?'|'!')*:prefix <rdfid>:namespace ':' <rdfid>:symbol => u":".join([u"".join(prefix),namespace,symbol])
 partialname ::= ~<alt_inner> ('['|'"')? (~(<space>|<finish>|']'|'"' ) <anything>)+:symbol (']'|'"')? => u''.join(symbol)
 pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
     | ('@' '.' '.' '/') => u'@@_parent'
@@ -158,9 +158,8 @@ pathseg ::= "/" => ''
     | "" => ''
     | "this" => ''
 pathseg ::= <anything>:symbol => u''.join(symbol)
-rdfid ::= [ "rdfid" <anything>:prefix <anything>:ns <anything>:ident ] => u"("+prefix+u","+ns+u','+ident+u')'
-compile_grammar = compile_grammar.format(str_class=str_class.__name__)
 """
+compile_grammar = compile_grammar.format(str_class=str_class.__name__)
 
 
 class PybarsError(Exception):
