@@ -109,7 +109,7 @@ notclosebracket ::= (~(']') <anything>)
 safesymbol ::=  ~<alt_inner> '['? (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol ']'? => start + u''.join(symbol)
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
 rdfid ::= ~<alt_inner> (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol => start + u''.join(symbol)
-rdf ::= ~<alt_inner> ('-'|'?'|'!')*:prefix <rdfid>:namespace ':' <rdfid>:symbol => u''.join(prefix) + ":" + namespace + ":" + symbol
+rdf ::= ~<alt_inner> ('-'|'^'|'?'|'!')*:prefix <rdfid>:namespace ':' <rdfid>:symbol => u"".join(prefix) + ":" + namespace + ":" + symbol
 partialname ::= ~<alt_inner> ('['|'"')? (~(<space>|<finish>|']'|'"' ) <anything>)+:symbol (']'|'"')? => u''.join(symbol)
 pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
     | ('@' '.' '.' '/') => u'@@_parent'
@@ -118,6 +118,7 @@ pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
     | '/' => u''
     | ('.' '.' '/') => u'@_parent'
     | '.' => u''
+    | ' ' => u''
 pathfinish :expected ::= <start> '/' <path>:found ?(found == expected) <finish>
 symbolfinish :expected ::= <start> '/' <symbol>:found ?(found == expected) <finish>
 blockrule ::= <start> '#' <block_inner>:i
