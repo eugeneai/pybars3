@@ -45,7 +45,7 @@ except NameError:
 
 
 # Flag for testing
-debug = False
+debug = True
 
 
 # Note that unless we presume handlebars is only generating valid html, we have
@@ -108,9 +108,12 @@ escapedquote ::= '\\' '"' => '\\"'
 notclosebracket ::= (~(']') <anything>)
 safesymbol ::=  ~<alt_inner> '['? (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol ']'? => start + u''.join(symbol)
 symbol ::=  ~<alt_inner> '['? (<letterOrDigit>|'-'|'@')+:symbol ']'? => u''.join(symbol)
+rdfid ::= ~<alt_inner> (<letter>|'_'):start (<letterOrDigit>|'_')+:symbol => start + u''.join(symbol)
+rdf ::= ~<alt_inner> ('-'|'?'|'!')*:prefix <rdfid>:namespace ':' <rdfid>:symbol => u''.join(prefix) + ":" + namespace + ":" + symbol
 partialname ::= ~<alt_inner> ('['|'"')? (~(<space>|<finish>|']'|'"' ) <anything>)+:symbol (']'|'"')? => u''.join(symbol)
 pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
     | ('@' '.' '.' '/') => u'@@_parent'
+    | <rdf>
     | <symbol>
     | '/' => u''
     | ('.' '.' '/') => u'@_parent'
