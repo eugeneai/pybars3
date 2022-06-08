@@ -45,8 +45,8 @@ except NameError:
 
 
 # Flag for testing
-# debug = False
-debug = True
+debug = False
+# debug = True
 
 
 # Note that unless we presume handlebars is only generating valid html, we have
@@ -120,7 +120,7 @@ pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
     | ('.' '.' '/') => u'@_parent'
     | '.' => u''
     | ' ' => u''
-    | '=' => u':'
+    | '=' => u'='
 pathfinish :expected ::= <start> '/' <path>:found ?(found == expected) <finish>
 symbolfinish :expected ::= <start> '/' <symbol>:found ?(found == expected) <finish>
 blockrule ::= <start> '#' <block_inner>:i
