@@ -120,6 +120,7 @@ pathseg ::= '[' <notclosebracket>+:symbol ']' => u''.join(symbol)
     | ('.' '.' '/') => u'@_parent'
     | '.' => u''
     | ' ' => u''
+    | "=" => u"="
 pathfinish :expected ::= <start> '/' <path>:found ?(found == expected) <finish>
 symbolfinish :expected ::= <start> '/' <symbol>:found ?(found == expected) <finish>
 blockrule ::= <start> '#' <block_inner>:i
